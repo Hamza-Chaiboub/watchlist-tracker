@@ -46,10 +46,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function contents() {
-        return $this->belongsToMany(Content::class, 'watch_lists')
-            ->using(WatchList::class)
-            ->withPivot('status_id', 'rating', 'created_at', 'updated_at')
-            ->withTimestamps();
+    public function watchlists() {
+        return $this->hasMany(WatchList::class);
     }
 }
