@@ -19,16 +19,14 @@ class WatchList extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
+    public function status() {
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
-    public function scopeCompleted($query)
-    {
-        return $query->where('status', 'completed');
+    public function content() {
+        return $this->belongsTo(Content::class, 'content_id');
     }
 }
