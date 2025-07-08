@@ -12,7 +12,22 @@ class WatchListController extends Controller
      */
     public function index()
     {
-        //
+        $watchLists = auth()->user()->watchLists()
+            ->with(['content', 'status', 'content.type'])
+            ->get()
+            ->map(function($item) {
+                return [
+                    'watchlist_id' => $item->id,
+                    'content_id' => $item->content->id,
+                    'content_external_id' => $item->content->external_id,
+                    'content_name' => $item->content->title,
+                    'content_type' => $item->content->type->name,
+                    'content_release_year' => $item->content->year,
+                    'content_poster' => $item->content->poster_path
+
+                ];
+            });
+        return response()->json($watchLists);
     }
 
     /**

@@ -10,11 +10,9 @@ class WatchList extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'title',
-        'description',
-        'status',
-        'start_date',
-        'end_date',
+        'content_id',
+        'status_id',
+        'rating',
     ];
 
     public function user()
