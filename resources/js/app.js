@@ -15,11 +15,14 @@ import {
   faStar,
   faEye,
   faArrowTrendUp,
-  faHome // Just for reference, since you mentioned it works
+  faPlus,
+  faClock,
+  faArrowRight,
+  faRightFromBracket
 } from '@fortawesome/free-solid-svg-icons';
 
 // Add them to the library
-library.add(faFilm, faPlay, faStar, faEye, faArrowTrendUp, faHome);
+library.add(faFilm, faPlay, faStar, faEye, faArrowTrendUp, faPlus, faClock, faArrowRight, faRightFromBracket);
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

@@ -4,30 +4,75 @@ namespace App\Http\Controllers;
 
 use App\Models\WatchList;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class WatchListController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $watchLists = auth()->user()->watchLists()
-            ->with(['content', 'status', 'content.type'])
+        $user = auth()->user();
+        $stats = [
+            'total' => $user->watchLists->count(),
+            'watching' => $user->watchLists()
+                ->whereHas('status', function($query) {
+                    $query->where('name', 'watching');
+                })
+                ->count(),
+            'completed' => $user->watchLists()
+                ->whereHas('status', function($query) {
+                    $query->where('name', 'completed');
+                })
+                ->count(),
+            'wantToWatch' => $user->watchLists()
+                ->whereHas('status', function($query) {
+                    $query->where('name', 'want_to_watch');
+                })
+                ->count(),
+            'avgRating' => $user->watchLists->avg('rating'),
+        ];
+        $continue = $user->watchLists()
+            ->with(['content', 'content.type'])
+            ->whereHas('status', function($query) {
+                $query->where('name', 'watching');
+            })
             ->get()
-            ->map(function($item) {
+            ->map(function($watchList) {
                 return [
-                    'watchlist_id' => $item->id,
-                    'content_id' => $item->content->id,
-                    'content_external_id' => $item->content->external_id,
-                    'content_name' => $item->content->title,
-                    'content_type' => $item->content->type->name,
-                    'content_release_year' => $item->content->year,
-                    'content_poster' => $item->content->poster_path
+                    'id' => $watchList->id,
+                    'content_id' => $watchList->content_id,
+                    'title' => $watchList->content->title,
+                    'image_url' => $watchList->content->poster_path,
+                    'type' => $watchList->content->type->name,
+                    'rating' => $watchList->rating,
+                    'progress' => 53,
 
                 ];
             });
-        return response()->json($watchLists);
+        $top_rated = $user->watchLists()
+            ->with(['content', 'content.type'])
+            ->orderBy('rating', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function($watchList) {
+                return [
+                    'id' => $watchList->id,
+                    'content_id' => $watchList->content_id,
+                    'title' => $watchList->content->title,
+                    'image_url' => $watchList->content->poster_path,
+                    'type' => $watchList->content->type->name,
+                    'rating' => $watchList->rating,
+                    'progress' => 53,
+                ];
+            });
+
+        return Inertia::render('Dashboard', [
+            'stats' => $stats,
+            'userContinue' => $continue,
+            'topRated' => $top_rated,
+        ]);
     }
 
     /**

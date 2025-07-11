@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex bg-gray-100 dark:bg-gray-900">
+  <div class="min-h-screen flex bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
 <!--    <aside class="w-64 bg-white dark:bg-gray-800 p-4">-->
 <!--      &lt;!&ndash; Sidebar content &ndash;&gt;-->
 <!--      <nav class="space-y-2">-->
