@@ -21,7 +21,7 @@ class ContentFactory extends Factory
             'title' => $this->faker->sentence(),
             'year' => $this->faker->year(),
             'type_id' => $this->faker->numberBetween(1, 5), // Assuming type IDs are between 1 and 5
-            'poster_path' => $this->faker->imageUrl(640, 480, 'movies', true, 'Faker'),
+            'poster_path' => 'https://picsum.photos/800/600',
             'created_at' => now(),
             'updated_at' => now(),
         ];
