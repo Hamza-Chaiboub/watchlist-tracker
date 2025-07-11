@@ -18,15 +18,15 @@ class WatchListFactory extends Factory
     {
         static $userPairs = [];
         do {
-            $userId = $this->faker->numberBetween(1, 101);
-            $contentId = $this->faker->numberBetween(4, 103);
+            $userId = $this->faker->numberBetween(1, 100);
+            $contentId = $this->faker->numberBetween(1, 100);
             $pair = "$userId-$contentId";
         } while (in_array($pair, $userPairs));
         $userPairs[] = $pair;
         return [
             'user_id' => $userId,
             'content_id' => $contentId,
-            'status_id' => $this->faker->numberBetween(1, 4),
+            'status_id' => $this->faker->numberBetween(1, 3),
             'rating' => $this->faker->numberBetween(1, 10)
         ];
     }
