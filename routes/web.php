@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WatchListController;
 use Illuminate\Foundation\Application;
@@ -19,12 +20,9 @@ Route::get('/watchlist', [WatchListController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('watchlist.index');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [WatchListController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/mylist', [MylistController::class, 'index'])->name(('mylist.index'));
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
