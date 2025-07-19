@@ -11,10 +11,11 @@
 const props = defineProps({ type: String });
 
 const badgeClasses = {
-  movie: 'bg-indigo-600 text-white',
-  series: 'bg-purple-600 text-white',
-  anime: 'bg-green-600 text-white',
-  documentary: 'bg-yellow-600 text-black',
+  Movie: 'bg-indigo-600/75 text-white',
+  Series: 'bg-purple-600/75 text-white',
+  Anime: 'bg-green-600/75 text-white',
+  Documentary: 'bg-yellow-600/75 text-black',
+  Cartoon: 'bg-gray-600/75 text-white',
 };
 </script>
 

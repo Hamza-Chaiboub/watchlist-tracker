@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Content;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ContentController extends Controller
 {
@@ -36,7 +37,31 @@ class ContentController extends Controller
      */
     public function show(Content $content)
     {
-        //
+        $content = Content::where('id', $content->id)
+            ->with(['watchlists' => function($query) use ($content) {
+                $query->where('user_id', auth()->id())
+                      ->where('content_id', $content->id)
+                      ->with('status');
+            }, 'type'])
+            ->first();
+        if($content) {
+            $watchlist = $content->watchlists->first();
+            $content = [
+                'id' => $content->id,
+                'content_id' => $content->id,
+                'title' => $content->title,
+                'image_url' => $content->poster_path,
+                'type' => $content->type->name,
+                'rating' => $watchlist->rating,
+                'status' => $watchlist->status->name,
+                'release_date' => $content->year,
+            ];
+        } else {
+            $content = null;
+        }
+        return Inertia::render('Content', [
+            'content' => $content,
+        ]);
     }
 
     /**
